@@ -1,0 +1,3 @@
+rootProject.name='Android Common'
+include ':photoloader'
+include ':photoloader-demo'
