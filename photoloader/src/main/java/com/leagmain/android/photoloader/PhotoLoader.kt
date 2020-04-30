@@ -1,8 +1,11 @@
 package com.leagmain.android.photoloader
 
-import androidx.lifecycle.LiveData
+import com.squareup.moshi.Moshi
+
+internal val moshi: Moshi by lazy {
+    Moshi.Builder().build()
+}
 
 interface PhotoLoader {
-    val photos: LiveData<List<Photo>>
-    fun load()
+    suspend fun load(): List<Photo>
 }

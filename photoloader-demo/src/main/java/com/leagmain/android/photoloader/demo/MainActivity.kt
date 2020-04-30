@@ -9,20 +9,20 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.loader.app.LoaderManager
-import com.leagmain.android.photoloader.PhotoLoader
-import com.leagmain.android.photoloader.photoLoader
+import com.leagmain.android.photoloader.Photo
+import com.leagmain.android.photoloader.loadPhotos
 
 class MainActivity : AppCompatActivity() {
 
-    private val loader: PhotoLoader by lazy { photoLoader(this, LoaderManager.getInstance(this)) }
+    private val photos = MutableLiveData<List<Photo>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        loader.photos.observe(this, Observer {
+        photos.observe(this, Observer {
             Log.d("leon", "photos: $it")
         })
 
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
                 Manifest.permission.READ_EXTERNAL_STORAGE
             ) == PackageManager.PERMISSION_GRANTED
         ) {
-            loader.load()
+            photos.value = contentResolver.loadPhotos()
         } else {
             ActivityCompat.requestPermissions(
                 this,
@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 0 && resultCode == Activity.RESULT_OK) {
-            loader.load()
+            photos.value = contentResolver.loadPhotos()
         }
     }
 }

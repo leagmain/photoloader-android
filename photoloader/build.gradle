@@ -39,7 +39,7 @@ afterEvaluate {
 
                 groupId = 'com.leagmain.android'
                 artifactId = 'photo-loader'
-                version = '1.0'
+                version = '1.0.0'
             }
         }
     }
