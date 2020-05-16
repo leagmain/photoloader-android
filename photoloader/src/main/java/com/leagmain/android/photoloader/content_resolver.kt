@@ -2,6 +2,11 @@ package com.leagmain.android.photoloader
 
 import android.content.ContentResolver
 import android.provider.MediaStore
+import com.squareup.moshi.Moshi
+
+internal val ContentResolver.moshi :Moshi by lazy {
+        Moshi.Builder().build()
+}
 
 fun ContentResolver.loadPhotos(): List<Photo> {
     val cursor = query(
