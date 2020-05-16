@@ -13,6 +13,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.leagmain.android.photoloader.Photo
 import com.leagmain.android.photoloader.loadPhotos
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         photos.observe(this, Observer {
-            Log.d("leon", "photos: $it")
+            photo_count.text = it.size.toString()
         })
 
         if (ContextCompat.checkSelfPermission(

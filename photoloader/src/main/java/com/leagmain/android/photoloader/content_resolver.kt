@@ -2,10 +2,27 @@ package com.leagmain.android.photoloader
 
 import android.content.ContentResolver
 import android.provider.MediaStore
+import com.squareup.moshi.FromJson
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.ToJson
+import java.util.*
 
-internal val ContentResolver.moshi :Moshi by lazy {
-        Moshi.Builder().build()
+internal val ContentResolver.moshi: Moshi by lazy {
+    Moshi.Builder()
+        .add(object {
+            @FromJson
+            fun fromJson(long: Long?): Date? {
+                long ?: return null
+                return Date(long)
+            }
+
+            @ToJson
+            fun toJson(date: Date?): Long? {
+                date ?: return null
+                return date.time
+            }
+        })
+        .build()
 }
 
 fun ContentResolver.loadPhotos(): List<Photo> {

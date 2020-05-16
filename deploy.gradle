@@ -41,6 +41,9 @@ install {
 
 Properties properties = new Properties()
 File propFile = "${System.properties['user.home']}${File.separator}.gradle${File.separator}bintray.properties" as File
+if (!propFile.exists()) {
+    throw Exception("Please create a ~/.gradle/bintray.properties to config `bintray.user` and `bintray.apikey`")
+}
 properties.load(propFile.newDataInputStream())
 
 bintray {

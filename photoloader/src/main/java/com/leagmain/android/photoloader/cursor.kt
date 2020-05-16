@@ -1,6 +1,7 @@
 package com.leagmain.android.photoloader
 
 import android.database.Cursor
+import android.util.Log
 import androidx.core.database.getBlobOrNull
 import androidx.core.database.getFloatOrNull
 import androidx.core.database.getIntOrNull
@@ -35,6 +36,7 @@ internal fun Cursor.readPhotos(moshi: Moshi): List<Photo> {
             values[columnName] = value
         }
         val json = moshi.adapter(Map::class.java).toJson(values)
+        Log.d("PhotoLoader", "photo: $json")
         val photo = PhotoJsonAdapter(moshi).fromJson(json) ?: continue
         photos.add(photo)
     }
