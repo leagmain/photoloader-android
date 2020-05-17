@@ -13,11 +13,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.leagmain.android.photoloader.Photo
 import com.leagmain.android.photoloader.loadPhotos
+import com.leagmain.android.photoloader.loadPhotosAsJsonString
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private val photos = MutableLiveData<List<Photo>>()
+    private val photosJsonString = MutableLiveData<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,12 +29,18 @@ class MainActivity : AppCompatActivity() {
             photo_count.text = it.size.toString()
         })
 
+        photosJsonString.observe(this, Observer {
+            Log.d("PhotoLoader", "photos json string: $it")
+            json_view.bindJson(it)
+        })
+
         if (ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.READ_EXTERNAL_STORAGE
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             photos.value = contentResolver.loadPhotos()
+            photosJsonString.value = contentResolver.loadPhotosAsJsonString()
         } else {
             ActivityCompat.requestPermissions(
                 this,
